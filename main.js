@@ -10,7 +10,7 @@ const Gameboard = (function(){
             return false;
         } else if (gameboard[row][column] === ''){
             gameboard[row][column] = player.symbol;
-            console.dir(gameboard);
+            //console.dir(gameboard);
             return true;
         } else {
             console.warn('Invalid move');
@@ -18,8 +18,13 @@ const Gameboard = (function(){
         };
     };
 
+    function getGameboard(){
+        return gameboard;
+    }
+
     return {
         changeTile,
+        getGameboard,
 
     }
 }());
@@ -32,10 +37,20 @@ function Player(name, symbol){
 };
 
 const Game = (function(){
-    const player1 = Player('Roland', 'X');
-    const player2 = Player('Olga', 'O');
     let victory = false;
     let roundsPlayed = 0;
+
+    function checkVictory(activePlayer){
+        const currentGameboard = Gameboard.getGameboard();
+        console.dir(currentGameboard);
+        // check for three consecutives in a row
+        for (row of currentGameboard){
+            victory = row.filter(column => column === activePlayer.symbol).length === 3;
+            if (victory){
+                break;
+            }
+        };
+    }
 
     function playGame(){
         const player1 = Player(prompt('Player1 name: '), 'X');
@@ -45,6 +60,7 @@ const Game = (function(){
         while(!victory && roundsPlayed < 9){
             roundsPlayed++;
             playRound(activePlayer);
+            checkVictory(activePlayer);
             if (activePlayer === player1){
                 activePlayer = player2;
             } else {
@@ -55,7 +71,6 @@ const Game = (function(){
 
     function playRound(activePlayer){
         let valid = false;
-        // Check for the changeTile returned value and then call playRound again
         while(!valid){
             const [row, column] = prompt(`Player: ${activePlayer.name}, make a move: `).split('');
             valid = Gameboard.changeTile(activePlayer, row, column);
