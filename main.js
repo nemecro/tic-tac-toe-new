@@ -5,12 +5,16 @@ const Gameboard = (function(){
                          ['', '', '']];
 
     const changeTile = (player, row, column) => {
-        if (gameboard[row][column] === ''){
+        if (gameboard[row] == undefined || gameboard[row][column] == undefined){
+            console.warn('Out of bounds');
+            return false;
+        } else if (gameboard[row][column] === ''){
             gameboard[row][column] = player.symbol;
             console.dir(gameboard);
+            return true;
         } else {
             console.warn('Invalid move');
-            return 'Invalid move';
+            return false;
         };
     };
 
@@ -50,9 +54,12 @@ const Game = (function(){
     };
 
     function playRound(activePlayer){
+        let valid = false;
         // Check for the changeTile returned value and then call playRound again
-        const [row, column] = prompt(`Player: ${activePlayer.name}, make a move: `).split('');
-        Gameboard.changeTile(activePlayer, row, column);
+        while(!valid){
+            const [row, column] = prompt(`Player: ${activePlayer.name}, make a move: `).split('');
+            valid = Gameboard.changeTile(activePlayer, row, column);
+        }
     };
 
     return {
