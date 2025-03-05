@@ -28,9 +28,19 @@ function Player(name, symbol){
 };
 
 const Game = (function(){
+    const player1 = Player('Roland', 'X');
+    const player2 = Player('Olga', 'O');
+    function playGame(){
+        playRound(player1);
+    };
 
+    function playRound(activePlayer){
+        const [row, column] = prompt(`Player: ${activePlayer.name}, make a move: `).split('');
+        Gameboard.changeTile(activePlayer, row, column);
+    };
+
+    return {
+        playGame,
+
+    }
 }());
-
-const player1 = Player('Roland', 'X');
-Gameboard.changeTile(player1, 0, 1);
-Gameboard.changeTile(player1, 0, 1);
