@@ -10,7 +10,6 @@ const Gameboard = (function(){
             return false;
         } else if (gameboard[row][column] === ''){
             gameboard[row][column] = player.symbol;
-            //console.dir(gameboard);
             return true;
         } else {
             console.warn('Invalid move');
@@ -47,9 +46,25 @@ const Game = (function(){
         for (row of currentGameboard){
             victory = row.filter(column => column === activePlayer.symbol).length === 3;
             if (victory){
+                console.log('Three in a row reached');
                 break;
             }
         };
+        // check for three consecutive in a column
+        for(let i = 0; i < 3; i++){
+            if (activePlayer.symbol === currentGameboard[0][i] && currentGameboard[0][i] === currentGameboard[1][i] && currentGameboard[0][i] === currentGameboard[2][i]){
+                victory = true;
+                console.log('Three in a column reached');
+                break;
+            }
+        };
+        if (activePlayer.symbol === currentGameboard[0][0] && currentGameboard[0][0] === currentGameboard[1][1] && currentGameboard[1][1] === currentGameboard[2][2]){
+            victory = true;
+            console.log('Three in a diag reached');
+        } else if (activePlayer.symbol === currentGameboard[2][0] && currentGameboard[2][0] === currentGameboard[1][1] && currentGameboard[1][1] === currentGameboard[0][2]){
+            victory = true;
+            console.log('Three in a diag reached');
+        }
     }
 
     function playGame(){
