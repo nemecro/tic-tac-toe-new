@@ -64,8 +64,8 @@ const Game = (function(){
         } else if (activePlayer.symbol === currentGameboard[2][0] && currentGameboard[2][0] === currentGameboard[1][1] && currentGameboard[1][1] === currentGameboard[0][2]){
             victory = true;
             console.log('Three in a diag reached');
-        }
-    }
+        };
+    };
 
     function playGame(){
         const player1 = Player(prompt('Player1 name: '), 'X');
@@ -82,6 +82,10 @@ const Game = (function(){
                 activePlayer = player1;
             };
         };
+
+        if (roundsPlayed >= 9){
+            console.log('A TIE!')
+        }
     };
 
     function playRound(activePlayer){
