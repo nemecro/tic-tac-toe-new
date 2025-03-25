@@ -74,6 +74,7 @@ const Game = (function(){
         let activePlayer = player1;
         while(!victory && roundsPlayed < 9){
             roundsPlayed++;
+            DOMhandler.render();
             playRound(activePlayer);
             checkVictory(activePlayer);
             if (activePlayer === player1){
@@ -101,3 +102,39 @@ const Game = (function(){
 
     }
 }());
+
+const DOMhandler = (function(){
+    const table = document.querySelector('#gameboard');
+    function render(){
+        const gameboardCopy = Gameboard.getGameboard();
+        let tbody = document.querySelector('tbody');
+        table.removeChild(tbody);
+        tbody = document.createElement('tbody');
+        gameboardCopy.forEach((row, rowIndex) => {
+            let trow = document.createElement('tr');
+            row.forEach((column, colIndex) => {
+                let tcol = document.createElement('td');
+                tcol.setAttribute('data-value', column);
+                tcol.setAttribute('row', rowIndex);
+                tcol.setAttribute('col', colIndex);
+                tcol.textContent = column;
+                trow.appendChild(tcol);
+            })
+            tbody.appendChild(trow);
+        });
+        table.appendChild(tbody);
+    };
+
+    return {
+        render,
+    }
+})();
+
+/* whenever a play game button is clicked, open a dialog for users to add their names
+when users add their names and click OK, call Game.playGame()
+when playGame() is called, call a method on the DOM Handler to render the gameboard
+there will need to be an initial render, and then whenever the gameboard is updated via the user's play, render it again
+
+for each rendered column add an event listener
+
+*/
